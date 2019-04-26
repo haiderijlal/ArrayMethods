@@ -2,29 +2,6 @@
 <script>
 
 
-//Prototype
-
-// function find(array, callback){
-//   for(var i =0; i < array.length; i++){
-//     if(callback(array[i])){return array[i];}
-//   }
-//   return undefined;
-// }
-
-//Requirements
-
-// 1: It should pass callback as an argument to the function.
-// 2: It should pass each element of the array as a first argument to the callback.
-// 3: It should pass index of the array(optional) as second argument to the callback.
-// 4: It should pass original array as third argument to the callback.
-// 5: It should pass object as third argument to the function.
-// 6: It should call callback for each index of the array irrespective of holes. 
-// 7: It should return undefined if no condition is matched in the callback.
-// 8: It should return the value of the first element in the array which satisfies the condition in callback.
-// 9: It should not call the callback for the new appended element to the array in the callback.  (Advanced)
-//10: It should call the callback for the deleted element from the array.                         (Advanced)
-//11: It should pass the modified value of the element at the time of callback call.              (Advanced)
-
 function find(array, callback, OptionalThis){
   var findCallback = callback;
   var length = array.length;
