@@ -19,16 +19,7 @@ function find(array, callback, OptionalThis){
 
 tests({
 
-  'It should run the callback function array.length times': function() {
-    var numberOfTImesCallbackRuns = 0;
-    find([1,2,3], function(){
-      numberOfTImesCallbackRuns++;
-    });
-
-    eq(numberOfTImesCallbackRuns, 3);
-  },
-
-
+  
   'It should pass each element as a first argument to the callback.': function() {
     find([1], function(element){
       eq(element, 1);
@@ -65,7 +56,7 @@ tests({
     eq(numberOfTImesCallbackRuns, 5);
   },
 
-  'It should return undefined if no condition is matched in the callback.': function() {    //re-wrote the test.
+  'It should return undefined if no condition is matched in the callback.': function() {  
     var findVariable =  find([1], function(element){
       return element%2 === 0;
     });
@@ -97,15 +88,6 @@ tests({
     });
   }
 
-  // 'It should visit the deleted element in the array': function(){
-  //   testArray = [1,2]
-  //   var deletedElementTest =  find(testArray, function(element, index, array){
-  //                             array.splice(1,1);
-  //                             return element%2===0;
-
-  //                             });
-  //   eq(deletedElementTest, 2)
-  // }
 
 });
 </script>
