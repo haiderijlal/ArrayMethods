@@ -1,0 +1,134 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+//Prototype
+
+// function find(array, callback){
+//   for(var i =0; i < array.length; i++){
+//     if(callback(array[i])){return array[i];}
+//   }
+//   return undefined;
+// }
+
+//Requirements
+
+// 1: It should pass callback as an argument to the function.
+// 2: It should pass each element of the array as a first argument to the callback.
+// 3: It should pass index of the array(optional) as second argument to the callback.
+// 4: It should pass original array as third argument to the callback.
+// 5: It should pass object as third argument to the function.
+// 6: It should call callback for each index of the array irrespective of holes. 
+// 7: It should return undefined if no condition is matched in the callback.
+// 8: It should return the value of the first element in the array which satisfies the condition in callback.
+// 9: It should not call the callback for the new appended element to the array in the callback.  (Advanced)
+//10: It should call the callback for the deleted element from the array.                         (Advanced)
+//11: It should pass the modified value of the element at the time of callback call.              (Advanced)
+
+function find(array, callback, OptionalThis){
+  var findCallback = callback;
+  var length = array.length;
+  if (OptionalThis) {findCallback = callback.bind(OptionalThis);}
+
+	for (var i = 0; i < length; i++) {
+
+    if(findCallback(array[i], i , array)){return array[i];}
+    
+  }
+  return undefined;
+}
+
+
+
+tests({
+
+  'It should run the callback function array.length times': function() {
+    var numberOfTImesCallbackRuns = 0;
+    find([1,2,3], function(){
+      numberOfTImesCallbackRuns++;
+    });
+
+    eq(numberOfTImesCallbackRuns, 3);
+  },
+
+
+  'It should pass each element as a first argument to the callback.': function() {
+    find([1], function(element){
+      eq(element, 1);
+    });
+  },
+
+  'It should pass index of the array as second argument to the callback.': function() {
+  
+    find([1], function(element, index){
+      eq(index, 0);
+    });
+  },
+
+  'It should pass original array as third argument to the callback.': function() {
+    var testarray = [1]
+    find(testarray, function(element, index, array){
+      eq(testarray, array);
+    });
+  },
+
+  'It should pass optional "this" as third argument to the function.': function() {
+    var testObject = {testProperty: "I am the test property"}
+    find([1], function(){
+      eq(this.testProperty, "I am the test property");
+    }, testObject)
+  },
+
+  'It should call callback for each index of the array irrespective of holes.': function() {
+    var numberOfTImesCallbackRuns = 0;
+    find([,,,,1], function(){
+      numberOfTImesCallbackRuns++;
+    });
+
+    eq(numberOfTImesCallbackRuns, 5);
+  },
+
+  'It should return undefined if no condition is matched in the callback.': function() {    //re-wrote the test.
+    var findVariable =  find([1], function(element){
+      return element%2 === 0;
+    });
+    eq(findVariable, undefined);
+  },      
+
+  'It should return the value of the first element in the array which satisfies the condition in callback.': function() {
+    var findVariable = find([1,,3,4,7], function(element){
+      return element%2 === 0;
+    });
+    eq(findVariable, 4)
+  },
+
+
+  'It should not call the callback for the new appended element to the array in the callback.': function() {
+    var numberOfTImesCallbackRuns = 0;
+    find([1,2], function(element, index, array){
+      numberOfTImesCallbackRuns++;
+      array.push(3);
+    });
+    eq(numberOfTImesCallbackRuns, 2);
+  },
+
+  'It should pass the modified value of the element at the time of callback call': function() {
+    testArray = [1];
+    find(testArray, function(element, index, array){
+      array[index] = 2;
+      eq(testArray[0], 2);
+    });
+  }
+
+  // 'It should visit the deleted element in the array': function(){
+  //   testArray = [1,2]
+  //   var deletedElementTest =  find(testArray, function(element, index, array){
+  //                             array.splice(1,1);
+  //                             return element%2===0;
+
+  //                             });
+  //   eq(deletedElementTest, 2)
+  // }
+
+});
+</script>
