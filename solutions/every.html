@@ -1,0 +1,132 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+//Funtion Signature
+// every(array, callback(element[, index, array]), [, thisArg])
+
+
+
+function every(array, callback, optionalThis){
+    var everyCallback = callback;
+    var length = array.length;
+    if (optionalThis) {
+        everyCallback = callback.bind(optionalThis);
+    }
+    for (var i= 0; i < length; i++) {
+        if (!everyCallback(array[i], i, array)) {
+          return false;  
+        }     
+    }
+    return true;   
+}
+
+
+tests({
+    'It should call callback array.length times if callback returns true always.': function() {
+    numberOfTimesCallbackCalls = 0;
+    every([1,2,3], function(){
+        numberOfTimesCallbackCalls++;
+        return true;
+    });
+    eq(numberOfTimesCallbackCalls, 3);
+  },
+
+
+  'It should pass in ith element of the array to the callback.': function() {
+    every([1],function(element){
+        eq(element, 1);
+    });
+    
+  },
+
+
+  'It should pass in index of ith element of the array to the callback.': function() {
+    every([1],function(element, index){
+        eq(index, 0);
+    });
+  },
+
+  'It should pass in original array as argument to the callback.': function() {
+    testArray = [1];
+    every(testArray, function(element, index, array){
+        eq(array, testArray);
+    });
+  },
+
+
+  'It should pass optional "this" to the function.': function() {
+    testObject = {message: 'I am from the test object'}
+    every([1], function(element, index, array){
+        eq(this.message, 'I am from the test object');
+    }, testObject)
+  },
+
+  
+  'It should stop the iteration of array as callback returns false.': function() {
+    var numberOfTimesCallbackCalls = 0;
+    every([1,2,4,5], function(element, index, array){
+        numberOfTimesCallbackCalls++;
+        return element <3;
+    });
+
+    eq(numberOfTimesCallbackCalls, 3);
+  },      
+
+  'It should return true if callback returns true for each element of the array.': function() {
+    var testVariable = every([1,2,3], function(element, index, array){
+      return element <5;
+    });
+    eq(testVariable, true);
+  },
+
+  'It should return false if callback returns false for one element of the array.': function() {
+    var testVariable = every([1,2,3], function(element, index, array){
+      return element <2;
+    });
+    eq(testVariable, false);
+  },
+
+  'It should return true if array is empty.': function(){
+    var testVariable = every([], function(element, index, array){
+      return element <2;
+    });
+    eq(testVariable, true);
+
+  },
+
+  'It should not call the callback for the new appended element to the array in the callback.': function() {
+    var numberOfTimesCallbackCalls = 0;
+    var testArray = [1];
+    every(testArray, function(element, index, array){
+      array.push(2);
+      numberOfTimesCallbackCalls++;
+      return true;
+    });
+    eq(numberOfTimesCallbackCalls, 1)
+    eq(testArray.length, 2);
+
+  },
+
+
+  'It should pass the modified value of the element at the time of callback call.': function() {
+    var testVariable =  every([1,2], function(element, index, array){
+      array[1] = 4;
+      return element <3;
+    });
+    eq(testVariable, false);
+  },
+
+  'It should not call the callback  for holes in the array.': function() {
+    numberOfTimesCallbackCalls = 0;
+    var testVariable = every([1,,,,4], function(element, index, array){
+        numberOfTimesCallbackCalls++;
+        return element < 3;
+    });
+    eq(numberOfTimesCallbackCalls, 2);
+    eq(testVariable, false);
+ }
+    
+});
+
+</script>
