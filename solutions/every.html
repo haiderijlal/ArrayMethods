@@ -10,17 +10,13 @@
 function every(array, callback, optionalThis){
     var everyCallback = callback;
     var length = array.length;
-    var arrayIndexes = Object.keys(array);
     if (optionalThis) {
         everyCallback = callback.bind(optionalThis);
     }
     for (var i= 0; i < length; i++) {
-        if (i in array ) {
-            if (!everyCallback(array[i], i, array)) {
-                return false; 
-            }   
-        }
-            
+        if (!everyCallback(array[i], i, array)) {
+          return false;  
+        }     
     }
     return true;   
 }
@@ -123,13 +119,12 @@ tests({
 
   'It should not call the callback  for holes in the array.': function() {
     numberOfTimesCallbackCalls = 0;
-    var testVariable = every([,,,,4], function(element, index, array){
+    var testVariable = every([1,,,,4], function(element, index, array){
         numberOfTimesCallbackCalls++;
-        return element > 3;
+        return element < 3;
     });
-    eq(testVariable, true);
-    eq(numberOfTimesCallbackCalls, 1);
-    
+    eq(numberOfTimesCallbackCalls, 2);
+    eq(testVariable, false);
  }
     
 });
