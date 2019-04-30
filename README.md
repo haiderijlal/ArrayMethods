@@ -7,3 +7,5 @@ List of functions recreated.
 1: Array.prototype.find().
 2: Array.prototype.findIndex().
 3: Array.prototype.every().
+4: Array.prototype.some().
+5: Array.prototype.reduceRight().
