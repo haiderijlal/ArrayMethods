@@ -1,0 +1,108 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+
+
+
+
+
+// function myConcat(){
+// 	var finalArray = [];
+// 	for(var i =0; i< arguments.length; i++){
+// 		for(var j=0; j<arguments[i].length; j++){
+// 			finalArray.push(arguments[i][j]);
+// 		}
+// 	}
+// 	console.log(finalArray);
+// }
+
+//Requirements
+//1: It should take n number of array as arguments
+//2: It should iterate through each array passed as arguments.
+//3: It should not iterate into the nested array.
+//4: If only one array is passed as argument, it should return new array with same values.
+//5: It should actually concat the arrays.
+//6: It should not mutate the original array. Always return a new array.
+//7: It should copy object reference present in the array.
+
+function concat(){
+  var finalArray=[];
+  for (var i= 0; i < arguments.length; i++) {
+    for (var j = 0; j < arguments[i].length; j++) {
+      finalArray.push(arguments[i][j]);
+    }
+    
+  }
+  return finalArray;
+}
+
+
+
+tests({
+
+  'It should return new array of combined size': function() {
+    var newArray=[];
+    newArray = concat([1], [2], [3])
+    eq(newArray.length, 3)
+  },
+
+  'If only one array is passed as argument, it should return new array with same values.': function() {
+    var newArray=[];
+    newArray = concat(['a'])
+    eq(newArray.length, 1)
+  },
+
+  'It should not mutate the original array. Always return a new array.': function() {
+    var newArray=[];
+    var testArray = ['a']
+    newArray = concat(testArray)
+    eq(newArray === testArray, false)
+  },
+
+  'It should take n number of array as arguments.': function() {
+    var lengthOfConcatedArray = 0;
+    var concatentedArray = [];
+    concatentedArray = concat([1],['a'],[2],['b'])
+    eq(concatentedArray.length, 4)
+  },
+
+
+  'It should iterate through each array passed as arguments.': function() {
+    var concatentedArray = [];
+    concatentedArray = concat([1],['a'],[3],['b'])
+    eq(concatentedArray[1], 'a');
+    eq(concatentedArray[2], 3)
+  },
+
+  'It should not iterate into the nested array.': function() {
+    var concatentedArray = [];
+    concatentedArray = concat([1],[2],[['a','b','c']])
+    eq(concatentedArray.length, 3);
+  },
+
+
+  'It should actually concat the arrays.': function() {
+    var concatentedArray = [];
+    concatentedArray = concat([1,2,3,4],['a','b','c','d'])
+    eq(concatentedArray.length, 8);
+
+    eq(concatentedArray[0], 1)
+    eq(concatentedArray[3], 4)
+    eq(concatentedArray[4], 'a')
+    eq(concatentedArray[7], 'd')
+  },
+    
+
+  'It should copy object reference present in the array.': function() {
+    var testObject = {description:'I am test Object'}
+    var originalArray = [1,2,testObject]
+    concatentedArray = concat(originalArray);
+    eq(concatentedArray[2]=== testObject, true);
+    concatentedArray[2].description = 'I am a test Object';
+    eq(testObject.description, 'I am a test Object')
+  }
+
+});
+</script>
