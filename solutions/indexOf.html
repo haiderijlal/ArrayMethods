@@ -1,0 +1,84 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+//Function Signature
+// indexOf(array, element[, fromIndex])
+
+
+function indexOf(array, element, fromIndex){
+    startIndex = 0;
+    if (arguments.length >2) {
+        if (fromIndex > array.length) {
+            return -1
+        }
+
+        if (fromIndex < 0) {
+            startIndex = array.length + fromIndex;
+        } else {
+            startIndex = fromIndex;
+        }
+
+        
+    }
+    for (var i = startIndex; i < array.length; i++) {
+        if (array[i]=== element) {
+            return i;
+        }   
+    }
+    return -1
+}
+
+
+
+tests({
+
+  
+    'It should return -1 if element is not found in the array': function() {
+        var elementIndex = indexOf([1,2,3], 4);
+        eq(elementIndex, -1)
+    },
+
+    'It should return the first index of array if element is found in the array': function() {
+        var elementIndex = indexOf(['a', 'b', 'c'], 'b');
+        eq(elementIndex, 1)
+    },
+
+
+    'It should follow the strict equality for comparing the element.': function() {
+        var elementIndex = indexOf(['1', '2', '3'], 2);
+        eq(elementIndex, -1)
+    },
+
+
+    'It should start from the start index passed to the function.': function() {
+        var startIndex= 2;
+        var elementIndex = indexOf([1,2,3,4], 2, startIndex);
+        eq(elementIndex, -1)
+    },
+
+    'It should search the whole array, if start index is passed 0.': function() {
+        var startIndex= 0;
+        var elementIndex = indexOf([1,2,3,4], 2, startIndex);
+        eq(elementIndex, 1)
+    },
+
+    'It should return -1, if start index is greater than the array.length.': function() {  
+        var startIndex= 5;
+        var elementIndex = indexOf([1,2,3,4], 2, startIndex);
+        eq(elementIndex, -1)
+    },      
+
+    
+    'It should start the search taking offset from the back, if start index is negative.': function() {
+        var startIndex1= -2;
+        var elementIndex1 = indexOf([1,2,3,4], 2, startIndex1);
+        var startIndex2 = -4
+        var elementIndex2 = indexOf([1,2,3,4], 2, startIndex2);
+        eq(elementIndex2, 1)
+        
+    },
+
+});
+</script>

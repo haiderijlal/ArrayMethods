@@ -1,0 +1,99 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+//Function Signature
+// lastIndexOf(array, element[, fromIndex])
+
+function lastIndexOf(array, element, fromIndex){
+    var startIndex = array.length-1;
+    if (arguments.length >2) {
+
+        if (fromIndex <0) {
+            newStartIndex = array.length + fromIndex;
+
+            startIndex = newStartIndex > 0 ? newStartIndex: -1;
+        }
+
+        if (fromIndex > array.length) 
+        {
+            startIndex = array.length;
+
+        }
+        if(fromIndex < array.length && fromIndex > 0)
+        {
+            startIndex = fromIndex;
+        }
+        
+    }
+
+    for ( var i= startIndex; i >=0 ; i--) {
+        if (element === array[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+
+
+tests({
+
+  
+    'It should return -1 if element is not found in the array': function() {
+        var elementIndex = lastIndexOf([1,2,3], 4);
+        eq(elementIndex, -1)
+    },
+
+    'It should return the last index of array if element is found in the array': function() {
+        var elementIndex = lastIndexOf(['a', 'b', 'c'], 'b');
+        eq(elementIndex, 1)
+    },
+
+
+    'It should follow the strict equality for comparing the element.': function() {
+        var elementIndex = lastIndexOf(['1', '2', '3'], 2);
+        eq(elementIndex, -1)
+    },
+
+
+    'It should start search from the start index passed to the function.': function() {
+        var startIndex= 2;
+        var elementIndex1 = lastIndexOf([1,2,3,4], 4, startIndex);
+        var elementIndex2 = lastIndexOf([1,2,3,4], 2, startIndex);
+        eq(elementIndex1, -1)
+        eq(elementIndex2, 1)
+    },
+
+    'It should start search from the backward': function() {
+        var startIndex= 2;
+        var elementIndex = lastIndexOf([1,2,3,2], 2, startIndex);
+        eq(elementIndex, 1)
+    },
+
+    'It should search the whole array, if start index is greater or equal to array.length.': function() {
+        var startIndex= 6;
+        var elementIndex = lastIndexOf([1,2,3,4], 3, startIndex);
+        eq(elementIndex, 2)
+    },
+ 
+    
+    'It should start the search taking offset from the back, if start index is negative.': function() {
+        var startIndex1= -2;
+        var elementIndex1 = lastIndexOf([1,2,3,4], 4, startIndex1);
+        eq(elementIndex1, -1)
+        var elementIndex2 = lastIndexOf([1,2,3,4], 2, startIndex1);
+        eq(elementIndex2, 1)
+        
+    },
+
+    'It should return -1 is offset calculated is less than 0': function() {
+        var startIndex= -5;
+        var elementIndex = lastIndexOf([1,2,3,4], 1, startIndex);
+        eq(elementIndex, -1)
+        
+    }
+
+});
+</script>

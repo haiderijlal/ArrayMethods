@@ -9,4 +9,6 @@ List of functions recreated.
 3: Array.prototype.every().
 4: Array.prototype.some().
 5: Array.prototype.reduceRight().
-6: Array.prototype.concat(.)
+6: Array.prototype.concat().
+7: Array.prototype.indexOf().
+8: Array.prototype.lastIndexOf().
