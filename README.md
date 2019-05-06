@@ -12,3 +12,4 @@ List of functions recreated.
 6: Array.prototype.concat().
 7: Array.prototype.indexOf().
 8: Array.prototype.lastIndexOf().
+9: Array.prototype.includes().

@@ -1,0 +1,106 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+//Function Signature
+// includes(array, valueToFind[, fromIndex])
+
+
+
+function includes(array, valueToFind, fromIndex){
+    startIndex = 0;
+
+    if (arguments.length > 2) {
+
+        if (fromIndex > array.length) {
+            return false;
+        }
+
+        if (fromIndex < 0) {
+            newStartIndex = array.length + fromIndex;
+            startIndex = newStartIndex < 0 ? 0: newStartIndex;     
+        } else{
+            startIndex = fromIndex;
+        }
+   
+    }
+
+    for (var i= startIndex; i < array.length; i++) {
+
+        if (valueToFind === array[i]) {
+            return true;
+        }    
+    }
+    return false;
+}
+
+
+
+tests({
+
+  
+    'It should return true if element is found in the array.': function() {
+        var isPresent = includes([1,2,3], 3);
+        eq(isPresent, true)
+    },
+
+    'It should return false if element is not found in the array.': function() {
+        var isPresent = includes([1,2,3], 4);
+        eq(isPresent, false)
+    },
+
+
+    'It should follow the strict equality for comparing the element.': function() {
+        var isPresent = includes(['1', '2', '3'], 2);
+        eq(isPresent, false)
+    },
+
+    'It should be case sensitive for string and character comparison.': function() {
+        var isPresent = includes(['A', 'B', 'C'], 'b');
+        eq(isPresent, false)
+    },
+
+
+    'It should start from the start index passed to the function.': function() {
+        var startIndex= 2;
+        var isPresent1 = includes([1,2,3,4], 2, startIndex);
+        var isPresent2 = includes([1,2,3,4], 4, startIndex);
+        eq(isPresent1, false)
+        eq(isPresent2, true)
+    },
+
+
+    'It should return -1, if start index is greater than the array.length.': function() {  
+        var startIndex= 5;
+        var isPresent = includes([1,2,3,4], 2, startIndex);
+        eq(isPresent, false)
+    },
+
+    'It should search the array from front to back.': function() {
+        var startIndex= 2;
+        var isPresent1 = includes([1,2,3,4], 2, startIndex);
+        var isPresent2 = includes([1,2,3,4], 4, startIndex);
+        eq(isPresent1, false)
+        eq(isPresent2, true)
+    },      
+
+    
+    'It should start the search from index equal to (array.length + fromIndex), if fromIndex is negative': function() {
+        var startIndex1= -2;
+        var isPresent1 = includes([1,2,3,4], 2, startIndex1);
+        var isPresent2 = includes([1,2,3,4], 4, startIndex1);
+        eq(isPresent1, false)
+        eq(isPresent2, true)
+        
+    },
+
+    'It should search whole array if  (array.length + fromIndex) is less than 0': function() {
+        var startIndex= -6;
+        var isPresent = includes([1,2,3,4], 1, startIndex);
+        eq(isPresent, true)
+        
+    }
+
+});
+</script>
