@@ -1,0 +1,111 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+// Function Signature
+// concat(array1[,delimiter])
+
+
+function join(array, delimiter)
+{
+    var joinedString = '';
+    var separator = ',';
+
+    if (array.length === 0) 
+    {
+        return joinedString;
+    }
+
+    if (arguments.length >1) 
+    {
+        
+        separator =  delimiter === ''? ' ': delimiter;
+        
+    }
+    
+    for (var i = 0; i < array.length; i++) 
+    {
+        if (array[i] === undefined || array[i] === null)  
+        {
+            element = '';
+        }
+        else
+        {
+            element = array[i];
+        }
+
+        joinedString = joinedString + element + separator;      
+    }
+
+    newJoinedString = joinedString.substr(0,joinedString.length-1)
+    return newJoinedString;
+
+}
+
+
+
+tests({
+
+  'It should concat the elements from the array.': function() {
+    var testString = join(['a','b','c']);
+    eq(testString, 'a,b,c');
+  },
+
+  'If the array has only one item, then that item will be returned without using the separator.': function() {
+    var testString = join(['a']);
+    eq(testString, 'a');
+  },
+
+  'It should return a string.': function() {
+    var testString = join([1,2,3]);
+    eq(typeof(testString), typeof('1,2,3'));
+  },
+
+  'If no delimiter, it should separate the elements of array by ",".': function() {
+    var testString = join(['a','b','c']);
+    eq(testString[1], ',');
+    eq(testString[3], ',');
+  },
+
+
+  'If delimiter is given, it should separate the elements of array by delimiter.': function() {
+    var separator = ':'
+    var testString = join(['a','b','c'], separator);
+    eq(testString[1], ':');
+    eq(testString[3], ':');
+  },
+
+  'It should consider hole as an element': function() {
+    var separator = '+'
+    var testString = join([1,,,2], separator);   // 1+++2
+    eq(testString.length, 5);
+    eq(testString[1], '+');
+    eq(testString[2], '+');
+  },
+
+  'If delimiter is an empty string, all elements are joined without any characters in between them': function() {
+    var separator = ''
+    var testString = join(['a','b','c'], separator);
+    eq(testString[1], ' ');
+    eq(testString[3], ' ');
+  },
+
+
+  'If array.length is 0, it should return a empty string.': function() {
+    var testString = join([], ":");
+    eq(testString, "");
+  },
+    
+
+  'If an element is undefined or null, it should be converted to the empty string.': function() 
+  {
+    var separator = '+'
+    var testString = join([1,undefined,null,2], separator);   // 1+++2
+    eq(testString.length, 5);
+    eq(testString[1], '+');
+    eq(testString[2], '+');  
+  }
+
+});
+</script>
