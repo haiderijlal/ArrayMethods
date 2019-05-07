@@ -13,3 +13,4 @@ List of functions recreated.
 7: Array.prototype.indexOf().
 8: Array.prototype.lastIndexOf().
 9: Array.prototype.includes().
+10: Array.prototype.slice().

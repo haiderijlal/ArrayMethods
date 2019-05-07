@@ -1,0 +1,122 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+//Function Signature
+// slice(array [, beginIndex[, endIndex])
+
+
+//prototype
+
+
+
+function slice(array, beginIndex, endIndex)
+{
+    var extractedArray = [];
+    var startIndex = 0;
+    var lastIndex = array.length;
+    if (arguments.length>1) {
+
+        if (beginIndex !== undefined) 
+        {
+            startIndex = beginIndex < 0 ? array.length+beginIndex: beginIndex ;
+        }
+        
+        if (endIndex !== undefined && endIndex >0) 
+        {
+            lastIndex = endIndex > array.length? array.length: endIndex;
+        }
+
+        if (endIndex < 0 ) 
+        {
+            lastIndex = array.length + endIndex;
+        }
+    }
+    for (var i = startIndex; i < lastIndex; i++) 
+    {
+        extractedArray.push(array[i]);
+        
+    }
+    return extractedArray;
+}
+
+
+
+tests({
+
+  
+    'It should return a new array.': function() {
+        testArray = [1,2,3];
+        var slicedArray = slice(testArray);
+        eq(slicedArray === testArray, false)
+    },
+
+    'If no beginIndex, it should begin extract from 0': function() {
+        var slicedArray = slice([1,2,3]);
+        eq(slicedArray[0], 1)
+    },
+
+
+    'If no endIndex, it should extract till the end.': function() {
+        testArray = [1,2,3];
+        lastIndex = testArray.length -1;
+        var slicedArray = slice(testArray);
+        eq(slicedArray[lastIndex], 3)
+    },
+
+    'If beginIndex is given, it should begin extract from beginIndex': function() {
+        var slicedArray = slice([1,2,3], 1);
+        eq(slicedArray[0], 2)
+    },
+
+    'If endIndex is given, it should extract till endIndex-1.': function() {
+        lastIndex = 4;
+        var slicedArray = slice([1,2,3,4,5], 0, lastIndex);
+        eq(slicedArray.length, 4)
+        eq(slicedArray[lastIndex-1], 4)
+    },
+
+
+    'If beginIndex is undefined, it should extract from 0.': function() {
+        var slicedArray = slice([1,2,3], undefined);
+        eq(slicedArray[0], 1)
+    },
+
+
+    'If beginindex is greater than array.length, it should return empty length': function() {  
+        var slicedArray = slice([1,2,3], 5);
+        eq(slicedArray.length, 0)
+    },
+
+    'If endIndex is greater than array.length, it should extract till the end': function() {
+        testArray = [1,2,3];
+        lastIndex = testArray.length -1;
+        var slicedArray = slice(testArray,0, 7);
+        eq(slicedArray.length, 3)
+        eq(slicedArray[lastIndex], 3)
+    },      
+
+    
+    'If beginIndex is negative, it should take offset for beginIndex from the end': function() {
+        var slicedArray = slice([1,2,3], -2);
+        eq(slicedArray.length, 2)
+        eq(slicedArray[0], 2)
+    },
+
+    'If endIndex is negative, it should take offset for endIndex from the end': function() {
+        var slicedArray = slice([1,2,3,4,5], 0, -2);
+        eq(slicedArray.length, 3)
+        eq(slicedArray[2], 3)
+    },
+
+    'It should copy object reference to the new array': function() {
+        var testArray = [1, {sliceProperty: "I am test object"}, 2]
+        var slicedArray = slice(testArray, 0)
+        slicedArray[1].sliceProperty = "I am a test object";
+        eq(testArray[1].sliceProperty, "I am a test object");
+        eq(testArray[1], slicedArray[1]);
+    }
+
+});
+</script>
