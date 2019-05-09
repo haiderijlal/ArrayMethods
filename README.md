@@ -15,3 +15,4 @@ List of functions recreated.
 9: Array.prototype.includes().
 10: Array.prototype.slice().
 11: Array.prototype.join().
+12: Array.prototype.push()
