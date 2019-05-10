@@ -1,0 +1,141 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+//Function Signature
+// pop(array[,....elementN])
+
+
+//Note: More functionality to be added as I progress.
+
+
+// function pop(arrayLikeObjects)       
+// {
+//     var hasLenghtProperty = false;
+//     if (typeof(arrayLikeObjects) === 'string' ) 
+//     {
+//         throw new TypeError(arrayLikeObjects + " is string and immutable.");
+//     }
+
+//     if ((arrayLikeObjects instanceof Object) && ! (arrayLikeObjects instanceof Array) && 
+//         ('length' in arrayLikeObjects)) 
+//     {
+//         hasLenghtProperty = true;    
+//     }
+
+//     var endIndex = arguments.length -1;
+//     startIndex = arrayLikeObjects.length === undefined ? 0 : arrayLikeObjects.length;
+
+//     for (var i= 0; i < endIndex; i++) 
+//     {
+//         arrayLikeObjects[startIndex] = arguments[i + 1];
+//         startIndex = arrayLikeObjects.length;
+
+//         if (hasLenghtProperty) {
+//             arrayLikeObjects.length++;
+//         }    
+//     }
+
+//     return arrayLikeObjects.length;
+
+// }
+
+
+
+function pop(arrayLikeObject){
+
+    if (typeof(arrayLikeObject) === 'string' ) 
+    {
+        throw new TypeError("TypeError: pop is not a function on string");
+    }
+    
+    if ((arrayLikeObject instanceof Object) && !(arrayLikeObject instanceof Array) && 
+        !('length' in arrayLikeObject)) 
+    {
+        throw new TypeError("TypeError: pop is not a function on objects");    
+    }
+
+    if (arrayLikeObject.length === 0) {
+        return undefined;
+    }
+
+    var lastIndex = arrayLikeObject.length -1;
+    poppedElement = arrayLikeObject[lastIndex]
+    arrayLikeObject.length = lastIndex;
+    return poppedElement;
+}
+
+
+
+
+tests({
+
+    'It should remove array at the back.': function() {
+        var testArray = [1,2,3]
+        var arrayLikeObjectLength = pop(testArray)
+        eq(testArray[testArray.length-1], 2);
+    },
+
+    'It should return removed element.': function() {
+        var testArray = [1,2,3]
+        var arrayLikeObjectLength = pop(testArray)
+        eq(arrayLikeObjectLength, 3);
+    },
+
+
+    'It should reduce the length of the array.': function() {
+        var testArray = [1,2,3]
+        var arrayLikeObjectLength = pop(testArray)
+        eq(testArray.length, 2);
+    },
+
+    'If array empty, it should return undefined.': function() {
+        var testArray = []
+        var arrayLikeObjectLength = pop(testArray)
+        eq(arrayLikeObjectLength, undefined);
+    },
+
+
+    'If string is passed in as first argument, It should throw a Type error.': function() {
+        var testArray = 'testString';
+        var isTypeError = false;
+        try 
+        {
+            var arrayLikeObjectLength = pop(testArray)
+
+        } catch (error) 
+        {
+            isTypeError = (error instanceof TypeError);
+        }
+        
+        eq(isTypeError, true);
+    },
+
+
+    'If no length property in array like objects, It should throw type error.':function(){
+        testObject = {a: 1, b: 2}
+        var isTypeError = false;
+        try 
+        {
+            var arrayLikeObjectLength = pop(testObject)
+
+        } catch (error) 
+        {
+            isTypeError = (error instanceof TypeError);
+        }
+        
+        eq(isTypeError, true);
+    },
+    
+    'It should remove element from the back of array for array like objects.':function(){
+        testObject = {a: 1, b: 2}
+        Array.prototype.push.call(testObject, 'c', 'd');
+        var lastElement = pop(testObject);
+        eq(lastElement, 'd')
+        eq(testObject.length, 1)
+    }
+
+
+});
+</script>
