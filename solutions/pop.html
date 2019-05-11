@@ -4,42 +4,8 @@
 
 
 //Function Signature
-// pop(array[,....elementN])
+// pop(array)
 
-
-//Note: More functionality to be added as I progress.
-
-
-// function pop(arrayLikeObjects)       
-// {
-//     var hasLenghtProperty = false;
-//     if (typeof(arrayLikeObjects) === 'string' ) 
-//     {
-//         throw new TypeError(arrayLikeObjects + " is string and immutable.");
-//     }
-
-//     if ((arrayLikeObjects instanceof Object) && ! (arrayLikeObjects instanceof Array) && 
-//         ('length' in arrayLikeObjects)) 
-//     {
-//         hasLenghtProperty = true;    
-//     }
-
-//     var endIndex = arguments.length -1;
-//     startIndex = arrayLikeObjects.length === undefined ? 0 : arrayLikeObjects.length;
-
-//     for (var i= 0; i < endIndex; i++) 
-//     {
-//         arrayLikeObjects[startIndex] = arguments[i + 1];
-//         startIndex = arrayLikeObjects.length;
-
-//         if (hasLenghtProperty) {
-//             arrayLikeObjects.length++;
-//         }    
-//     }
-
-//     return arrayLikeObjects.length;
-
-// }
 
 
 
@@ -65,6 +31,8 @@ function pop(arrayLikeObject){
     arrayLikeObject.length = lastIndex;
     return poppedElement;
 }
+
+
 
 
 
