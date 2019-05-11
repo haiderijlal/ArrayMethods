@@ -1,0 +1,122 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+//Function Signature
+// shift(arrayLikeObjects)
+
+
+function shift(arrayLikeObject){
+
+    if (arrayLikeObject.length === 0 ) 
+    {
+        return undefined;
+    }
+
+    if (typeof(arrayLikeObject) === 'string') 
+    {
+        throw new TypeError("TypeError: pop is not a function on string");
+    }
+
+    if ((arrayLikeObject instanceof Object) && !(arrayLikeObject instanceof Array) && 
+        !('length' in arrayLikeObject)) 
+    {
+        return undefined;   
+    }
+    var firstElement = arrayLikeObject[0];
+    for (var i= 0; i < arrayLikeObject.length; i++) 
+    {
+        arrayLikeObject[i] = arrayLikeObject[i+1];
+        
+    }
+    arrayLikeObject.length = arrayLikeObject.length -1;
+    return firstElement;
+}
+
+
+
+
+tests({
+
+    'It should remove element from the zeroth index.': function() {
+        var testArray = [1,2,3];
+        elementAtZeroIndex = testArray[0]
+        var removedElement = shift(testArray);
+        eq(elementAtZeroIndex, removedElement)
+    },
+
+    'It should remove element from the original array.': function() {
+        var originalArray = [1,2,3];
+        var removedElement = shift(originalArray);
+        eq(originalArray.length, 2)
+    },
+
+
+    'It should return the removed value.': function() {
+        var testArray = [1,2,3];
+        var removedElement = shift(testArray);
+        eq(1, removedElement)
+    },
+
+    'It should shift down the values at consecutive indexes.': function() {
+        var testArray = [1,2,3];
+        var removedElement = shift(testArray);
+        eq(testArray[0], 2)
+        eq(testArray[1], 3)
+    },
+
+
+    'If length property is zero, it should return undefined.': function() {
+        var testArray = [];
+        var removedElement = shift(testArray);
+        eq(removedElement, undefined)
+    },
+
+
+    'If applied on string, It should throw a Type error.':function(){
+        var testArray = 'testString';
+        var isTypeError = false;
+        try 
+        {
+            var removedElement = shift(testArray)
+
+        } catch (error) 
+        {
+            isTypeError = (error instanceof TypeError);
+        }
+        
+        eq(isTypeError, true);
+    },
+    
+    'It should work for array like objects too.': function(){
+        testObject = {a: 1, b: 2}
+        Array.prototype.push.call(testObject, 'c', 'd');
+        var removedElement = shift(testObject);
+        eq(removedElement, 'c')
+        eq(testObject.length, 1)
+    },
+
+    'If no length property in array like objects, It should return undefined.': function(){
+        testObject = {a: 1, b: 2}
+        var removedElement = shift(testObject);
+        eq(removedElement, undefined)
+    },
+
+    'If length property in array like objects, It should remove zeroth element.': function(){
+        testObject = {
+            0: 'a',
+            1: 'b',
+            a:'c',
+            b:'d',
+            length:4
+        }
+        var removedElement = shift(testObject);
+        eq(removedElement, 'a')
+        eq(testObject.length, 3)
+    }
+
+
+});
+
+</script>
