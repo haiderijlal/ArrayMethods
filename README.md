@@ -17,3 +17,5 @@ List of functions recreated.
 11: Array.prototype.join()
 12: Array.prototype.push()
 13: Array.prototype.pop()
+14: Array.prototype.shift()
+15: Array.prototype.unshift()
