@@ -1,0 +1,134 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+// Function Signature
+// push(arrayLikeObjects[,.....[, elementN])
+
+
+
+
+function unshift(arrayLikeObject)
+{
+    var hasLengthProperty = false;
+    var endIndex = arguments.length -1;
+
+    if (typeof(arrayLikeObject) === 'string' ) 
+    {
+        throw new TypeError(arrayLikeObject + " is string and immutable.");
+    }
+
+    if (arrayLikeObject.length === undefined) 
+    {
+        arrayLikeObject.length = 0;
+        var hasLengthProperty = true;
+    }
+
+    if ((arrayLikeObject instanceof Object) && ! (arrayLikeObject instanceof Array) && 
+        ('length' in arrayLikeObject)) 
+    {
+        hasLengthProperty = true;    
+    }
+
+    for (var j= endIndex; j>0; j--) 
+    {
+
+        for (var i = arrayLikeObject.length; i >0; i--) 
+        {
+            arrayLikeObject[i] = arrayLikeObject[i-1];
+        }
+        arrayLikeObject[0] = arguments[j];
+        if (hasLengthProperty) {
+            
+            arrayLikeObject.length++;
+        }   
+
+    }
+    
+    return arrayLikeObject.length;
+}
+
+
+
+tests({
+
+    'It should append element at zero index of the array.': function() {
+
+        testArray = [2,3]
+        var arrayLength = unshift(testArray, 1)
+        eq(testArray[0], 1)
+    },
+
+    'It should return array.lenght.': function() {
+        testArray = [1,2,3]
+        var arrayLength = unshift(testArray, 0)
+        eq(arrayLength, 4)
+    },
+
+
+    'It should append elements in the same order as passed in parameter. ': function() {
+        
+        var testArray = [4,5,6];
+        var arrayLength = unshift(testArray, 1,2,3)
+        eq(testArray[0], 1)
+        eq(testArray[1], 2)
+        eq(testArray[2], 3)
+        eq(arrayLength, 6)
+    },
+
+    'If no element provided, It should return array.length.': function() {
+        testArray = [1,2,3]
+        var arrayLength = unshift(testArray)
+        eq(arrayLength, 3)
+    },
+
+
+    'It should take element as argument of any data type.': function() {
+        var testArray = [1]
+        var newArrayLenght = unshift(testArray, 'a', true, undefined)
+        eq(testArray[0], 'a') 
+        eq(testArray[1], true) 
+        eq(testArray[2], undefined)
+    },
+
+
+    'If string is passed in as first argument, it should throw a Type error':function(){
+        var isTypeError = false;
+        try {
+            unshift('testStrin', 'g' )
+        } catch (error) 
+        {
+            isTypeError = (error instanceof TypeError);
+        }
+
+        eq(isTypeError, true);
+    },
+    
+    'If no length property in array like objects, then element should be added at zero index': function(){
+        testObject = {a: 1, b: 2}
+        var ArrayLikeObjectLength =  unshift (testObject, 3);
+        eq(testObject[0], 3)
+    },
+
+    'If no length property in array like objects, then it should create length property': function(){
+        testObject = {a: 1, b: 2}
+        var ArrayLikeObjectLength =  unshift (testObject, 3, 4, 5);
+        eq(testObject[0], 3)
+        eq(testObject[1], 4)
+        eq(testObject[2], 5)
+        eq(testObject.length, 3)
+    },
+
+    'If object has length property, it should increment length property': function(){
+        debugger;
+        testObject = {0: '1', 1:'2', a: 3, b: 4, length: 2}
+        var arrayLikeObjectLength =  unshift (testObject, '5', '6');
+        eq(testObject.length, arrayLikeObjectLength)
+        eq(testObject[0], '5');
+        eq(testObject[1], '6');
+    }
+
+
+});
+</script>
