@@ -19,3 +19,5 @@ List of functions recreated.
 13: Array.prototype.pop()
 14: Array.prototype.shift()
 15: Array.prototype.unshift()
+16: Array.prototype.fill()
+17: Array.prototype.reverse()

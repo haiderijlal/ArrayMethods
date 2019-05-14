@@ -1,0 +1,82 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+//Function Signature
+//reverse(array)
+
+
+function reverse(array)
+{
+
+    var length = array.length;
+    var arrayIndexes = Object.keys(array);
+
+    for (var i = 0; i < length/2; i++) 
+    {   
+        isFrontElementHole = i in array; 
+        frontElement = array[i];
+        isBackElementHole = (length-i-1) in array
+        backElement = array[length-i-1];
+        array[i] = backElement;
+        array[length-i-1] = frontElement;
+        
+        if (!isFrontElementHole) {delete array[length-i-1]}
+        if (!isBackElementHole) {delete array[i]}
+    }
+
+    return array;
+}
+
+
+tests({
+
+    'It should return array.': function() {
+        var testArray = reverse([1,2,3])
+        eq(Array.isArray(testArray), true)
+    },
+
+    'It should actually reverse the array': function() {
+        var reversedArray = reverse([1,2,3,4,5]);
+        eq(reversedArray[0], 5)
+        eq(reversedArray[1], 4) 
+        eq(reversedArray[4], 1)
+        eq(reversedArray[3], 2)   
+    },
+
+
+    'It should modify the original array': function() {
+        var testArray = [1,2,3,4]
+        var reversedArray = reverse(testArray);
+        eq(testArray, reversedArray)
+        eq(testArray[0], 4)
+        eq(testArray[3], 1)
+    },
+
+    'If length property present in array like objects, it should reverse it too.': function() {
+        var testObject = {
+            0: 'h',
+            1: 'e',
+            2: 'l',
+            3: 'l',
+            4: 'o',
+            length: 5
+        }
+        var reversedObject = reverse(testObject);
+        eq(reversedObject, testObject)
+        eq(reversedObject[0], 'o')
+        eq(reversedObject[4], 'h')
+    },
+
+
+    'It should handle arrays with holes.': function() {
+        var reversedArray = reverse([1,,,2,,3]);
+        console.log(reversedArray)
+        eq(reversedArray[0], 3)
+        eq(reversedArray[5], 1) 
+        eq(reversedArray[2], 2) 
+    }
+
+});
+</script>
