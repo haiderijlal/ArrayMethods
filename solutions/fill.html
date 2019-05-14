@@ -14,23 +14,21 @@ function fill(arrayLikeObject)
     var start = 0;
     var end = arrayLikeObject.length -1;
     
-
-    if (arguments.length === 3 && arguments[2] === arguments[2]) 
-    {   
-        start = arguments[2] < 0  ? arrayLikeObject.length + arguments[2]: arguments[2];    
-    }
-
-    if (arguments.length === 4) 
+    if (arguments[2] !==arguments[2] && arguments[3] !==arguments[3]) 
     {
-        if (arguments[2] !==arguments[2] && arguments[3] !==arguments[3]) 
-        {
-            start = arrayLikeObject.length;
-        } else 
-        {
-            start = arguments[2] < 0  ? arrayLikeObject.length + arguments[2]: arguments[2];
-            end = arguments[3] < 0 ? arrayLikeObject.length + arguments[3]: arguments[3];
-        }    
+        return arrayLikeObject
     }
+
+    if (arguments.length > 2 && arguments[2]===arguments[2]) 
+    {
+        start = arguments[2] < 0  ? arrayLikeObject.length + arguments[2]: arguments[2];
+
+        if (arguments.length ===4 && arguments[3]===arguments[3]) 
+        {
+            end = arguments[3] < 0 ? arrayLikeObject.length + arguments[3]: arguments[3];
+        }
+    }
+
     
 
     for (var i = start; i <= end; i++) 
