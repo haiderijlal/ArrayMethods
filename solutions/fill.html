@@ -1,0 +1,137 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+//Function Signature
+//fill(array, value[, start[, end]])
+
+
+
+function fill(arrayLikeObject)
+{   
+    var value = arguments[1];
+    var start = 0;
+    var end = arrayLikeObject.length -1;
+    
+
+    if (arguments.length === 3 && arguments[2] === arguments[2]) 
+    {   
+        start = arguments[2] < 0  ? arrayLikeObject.length + arguments[2]: arguments[2];    
+    }
+
+    if (arguments.length === 4) 
+    {
+        if (arguments[2] !==arguments[2] && arguments[3] !==arguments[3]) 
+        {
+            start = arrayLikeObject.length;
+        } else 
+        {
+            start = arguments[2] < 0  ? arrayLikeObject.length + arguments[2]: arguments[2];
+            end = arguments[3] < 0 ? arrayLikeObject.length + arguments[3]: arguments[3];
+        }    
+    }
+    
+
+    for (var i = start; i <= end; i++) 
+    {
+        arrayLikeObject[i] = value;
+        
+    }
+
+    return arrayLikeObject;
+}
+
+
+
+tests({
+
+    'It should fill the value to the array.': function() {
+        var testArray = [1,2,3]
+        var filledArray =  fill(testArray, 1);
+        eq(filledArray[1], 1)
+        eq(filledArray[2], 1)
+    },
+
+    'It should modify the array.': function() {
+        var testArray = [1,2,3]
+        var filledArray =  fill(testArray, 1);
+        eq(filledArray, testArray)
+        
+    },
+
+
+    'If no start index is given, default start index is 0.': function() {
+        var testArray = [1,2,3]
+        var filledArray =  fill(testArray, 4);
+        eq(filledArray[0], 4)
+    },
+
+    'If start index is given, it should start filling from start index.': function() {
+        var testArray = [1,2,3,4,5]
+        var filledArray =  fill(testArray, 'a', 2);
+        eq(filledArray[1], 2)
+        eq(filledArray[2], 'a')
+    },
+
+
+    'If no end index is given, default end index is array.length -1.': function() {
+        var testArray = [1,2,3]
+        var filledArray =  fill(testArray, 4);
+        eq(filledArray[filledArray.length-1], 4)
+    },
+
+
+    'If end index is given, it should end filling till the end index.':function(){
+        var testArray = [1,2,3,4,5]
+        var filledArray =  fill(testArray, 'a', 1, 3);
+        eq(filledArray[3], 'a')
+        eq(filledArray[4], 5)
+    },
+    
+    'If start is negative, it is treated as array.length + start.':function(){
+        var testArray = [1,2,3,4,5]
+        var filledArray =  fill(testArray, 'a', -2);
+        eq(filledArray[2], 3)
+        eq(filledArray[3], 'a')
+    },
+
+    'If end is negative, it is treated as array.length + end.':function(){
+        var testArray = [1,2,3,4,5]
+        var filledArray =  fill(testArray, 'a', 1, -2);
+        eq(filledArray[4], 5)
+        eq(filledArray[3], 'a')
+    },
+
+    'If start is NaN, it should fill the array taking start index as 0.':function(){
+        var testArray = [1,2,3,4,5]
+        var filledArray =  fill(testArray, 'a', NaN);
+        eq(filledArray[0], 'a')
+        eq(filledArray[4], 'a')
+    },
+
+    'If start and end are NaN, it should not fill the array.':function(){
+        var testArray = [1,2,3,4,5]
+        var filledArray =  fill(testArray, 'a', NaN, NaN);
+        eq(filledArray[0], 1)
+        eq(filledArray[4], 5)
+    },
+
+    'If length property present in array like objects, it should fill like native arrays.':function(){
+        testObject = {
+            0: 'a',
+            1: 'b',
+            a:'1',
+            b:'2',
+            length:4
+        }
+
+        var filledObject =  fill(testObject, 'hi', 1, 2);
+        eq(filledObject[0], 'a')
+        eq(filledObject[1], 'hi')
+        eq(filledObject[3], undefined)
+
+    }
+
+});
+</script>
