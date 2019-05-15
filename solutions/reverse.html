@@ -15,15 +15,15 @@ function reverse(array)
 
     for (var i = 0; i < length/2; i++) 
     {   
-        isFrontElementHole = i in array; 
+        isFrontElementInArray = i in array; 
         frontElement = array[i];
-        isBackElementHole = (length-i-1) in array
+        isBackElementInArray = (length-i-1) in array
         backElement = array[length-i-1];
         array[i] = backElement;
         array[length-i-1] = frontElement;
         
-        if (!isFrontElementHole) {delete array[length-i-1]}
-        if (!isBackElementHole) {delete array[i]}
+        if (!isFrontElementInArray) {delete array[length-i-1]}
+        if (!isBackElementInArray) {delete array[i]}
     }
 
     return array;
@@ -72,7 +72,6 @@ tests({
 
     'It should handle arrays with holes.': function() {
         var reversedArray = reverse([1,,,2,,3]);
-        console.log(reversedArray)
         eq(reversedArray[0], 3)
         eq(reversedArray[5], 1) 
         eq(reversedArray[2], 2) 
