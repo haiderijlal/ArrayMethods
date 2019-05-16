@@ -21,4 +21,5 @@ List of functions recreated.
 15: Array.prototype.unshift()<br/>
 16: Array.prototype.fill()<br/>
 17: Array.prototype.reverse()<br/>
-18: Array.prototype.copyWithin()
+18: Array.prototype.copyWithin()<br/>
+19: Array.prototype.sort()

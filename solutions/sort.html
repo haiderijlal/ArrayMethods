@@ -1,0 +1,130 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+//Function Signature
+//sort(array,[, function(a, b)])
+
+
+function sort(array, callback)
+{
+    var numberOfHoles = 0;
+    var length = array.length;
+    debugger;
+    for (var i = 0; i < length-1; i++) 
+    {
+        if (!(i in array)) {numberOfHoles++}
+        for (var j = i+1; j < length; j++) 
+        {
+            if (String(array[i]) > String(array[j])) 
+            {
+                min = array[j];
+                array[j] = array[i];
+                array[i] = min;    
+            }      
+        }
+    }
+    
+    var lengthOfHoles = numberOfHoles
+
+    while (numberOfHoles >0) 
+    {
+        delete array[length -numberOfHoles]
+        numberOfHoles--
+    }
+
+    if (arguments.length > 1) 
+    {   
+        for (var i = 0; i < length - lengthOfHoles-1; i++) 
+        {
+            for (var j = i+1; j < length - lengthOfHoles; j++) 
+            {
+                if (callback(array[i], array[j])> 0 ) 
+                {
+                    var min = array[j];
+                    array[j] = array[i];
+                    array[i] = min;    
+                }       
+            }       
+        }
+    }
+
+    return array;
+}
+
+
+tests({
+
+    'It should return an array.': function() {
+        var sortedArray = sort([1,2,3]);
+        eq(Array.isArray(sortedArray), true);
+    },
+
+    'If no compareFunction() and array of string given, it should sort based on UTF code.': function() {
+
+        var testArray = ['one', 'two', 'three', 'four']
+        var sortedArray = sort(testArray);
+        eq(sortedArray[0], 'four')
+        eq(sortedArray[3], 'two')
+    },
+
+
+    'If no compareFunction() and array of number given, it should convert number to string and sort.': function() {
+        var testArray = [21, 10, 109, 4]
+        var sortedArray = sort(testArray);
+        eq(sortedArray[0] === 10, true)
+        eq(sortedArray[1], 109)
+        eq(sortedArray[3], 4)
+    },
+
+    'It should sort the original array not the copy.': function() {
+        testArray = [3,2,1]
+        var sortedArray = sort(testArray);
+        eq(testArray, sortedArray)
+        eq(testArray[0], 1)
+
+    },
+
+    'If compareFunction(a,b), return a-b and array of numbers, It should sort in ascending order.': function() {
+        var testArray = [21, 10, 109, 4]
+        var sortedArray = sort(testArray, function(a, b){
+            return a-b;
+        });
+        eq(sortedArray[0] === 4, true)
+        eq(sortedArray[1], 10)
+        eq(sortedArray[3], 109)
+    },
+
+
+    'It should put holes at the end of the array.': function() {
+        var testArray = [21,,10,,109,,4]
+        var sortedArray = sort(testArray);
+        eq(sortedArray[0] === 10, true)
+        eq(sortedArray[3], 4)
+        eq(4 in sortedArray, false)
+        eq(5 in sortedArray, false)
+    },
+
+    'It should put undefined at the end of the array but before the holes.': function(){
+        var testArray = [21,,10,undefined,109,,4]
+        var sortedArray = sort(testArray);
+        eq(sortedArray[0] === 10, true)
+        eq(sortedArray[3], 4)
+        eq(sortedArray[4], undefined)
+        eq(6 in sortedArray, false)
+    },
+
+    'It should not call callback for holes and undefined': function() {
+        var numberOfTimesCallbackCalled = 0
+        var testArray = [4, , 7, 2]
+        var sortedArray = sort(testArray, function(a,b){
+            numberOfTimesCallbackCalled++
+            return a-b;
+        });
+        eq(numberOfTimesCallbackCalled, 3)
+    },
+
+
+});
+</script>
