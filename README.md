@@ -22,4 +22,5 @@ List of functions recreated.
 16: Array.prototype.fill()<br/>
 17: Array.prototype.reverse()<br/>
 18: Array.prototype.copyWithin()<br/>
-19: Array.prototype.sort()
+19: Array.prototype.sort()<br/>
+20: Array.prototype.splice()

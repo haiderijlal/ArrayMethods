@@ -1,0 +1,171 @@
+<script src="../SimpleTest.js"></script>
+<script>
+
+
+
+//Function Signature
+//splice(array, start[, deleteCount[, item1, item2 ....]])
+
+
+
+
+function splice(array, start)
+{
+    
+    var length = array.length;
+    if (start<0) 
+    {
+        var offsetStart = start + array.length; 
+        start =  offsetStart < 0 ? 0: offsetStart;
+    }
+
+    var startIndex = start;
+    if (arguments[2] !== undefined) 
+    {
+        maxDeleteCount = length - start;
+        deleteCount = arguments[2];
+        deleteCount = deleteCount> maxDeleteCount? maxDeleteCount : deleteCount;
+    }else{
+        deleteCount = length - start;
+    }
+
+    var endIndex = startIndex + deleteCount;
+    var splicedArray = [];
+    var spliceArrayIndex = 0;
+
+    for (var i = startIndex; i < endIndex; i++) 
+    {
+        splicedArray[spliceArrayIndex++] = array[i];
+        if (!(i in array)) { delete splicedArray[spliceArrayIndex-1]}
+        
+        delete array[i];
+        array[i] = array[i+deleteCount]
+        if (!((i+deleteCount) in array)) { delete array[i]}
+    }
+
+    array.length = array.length - deleteCount;
+
+    if (arguments.length>3) 
+    {
+        var newLength = array.length;
+        itemsCount = arguments.length -3;
+
+        for (var i = newLength-1; i >=start; i--) 
+        {
+            array[i+itemsCount] = array[i]
+            
+        }
+
+        for (var i = 0; i < itemsCount; i++) 
+        {
+            array[i + start] = arguments[i+3]
+            
+        }
+        
+    }
+
+    return splicedArray
+}
+
+
+
+
+
+
+tests({
+
+    'It should return an array.': function() {
+        var splicedArray = splice([1,2,3,4], 1)
+        eq(Array.isArray(splicedArray), true)
+    },
+
+    'It should change array.length while deleting, not leaving holes in place.': function() {
+        testArray = [1,2,3,4]
+        var splicedArray = splice(testArray, 2)
+        eq(testArray.length, 2)
+        eq(testArray[1], 2)
+    },
+
+
+
+    'If no deleteCount, It should delete element from start to the end of array.': function() {
+        testArray = [1,2,3,4,5]
+        var splicedArray = splice(testArray, 2)
+        eq(testArray[0], 1)
+        eq(testArray[1], 2)
+        eq(testArray.length, 2)
+    },
+
+
+    'If no deleteCount and start is negative, It should assign start = array.length + start.': function() {
+        testArray = [1,2,3,4,5]
+        var splicedArray = splice(testArray, -2)
+        eq(testArray[0], 1)
+        eq(testArray[2], 3)
+        eq(testArray.length, 3)
+    },
+
+
+    'If no deleteCount and |array.length + start| > array.length, It should assign start = 0.':function(){
+        testArray = [1,2,3,4,5]
+        var splicedArray = splice(testArray, -6)
+        eq(testArray.length, 0)
+    },
+    
+    'If deleteCount is zero/negative and no items, it should not remove any element.':function(){
+        testArray = [1,2,3,4,5]
+        var splicedArray = splice(testArray, 2, 0)
+        eq(testArray.length, 5)
+    },
+
+    'If deleteCount is zero/negative and no items, it should return empty array.':function(){
+        testArray = [1,2,3,4,5]
+        var splicedArray = splice(testArray, 2, 0)
+        eq(splicedArray.length, 0)
+    },
+
+    'If deleteCount is non zero and no items, it should delete from start upto start + deleteCount':function(){
+        testArray = ['a',2,3,4,'b']
+        var splicedArray = splice(testArray, 1, 3)
+        eq(testArray.length, 2)
+        eq(testArray[0], 'a')
+        eq(testArray[1], 'b')
+    },
+
+    'If deleteCount is zero/negative and items given, it should insert items from start.':function(){
+
+        testArray = [1,2,3]
+        var splicedArray = splice(testArray, 1, 0, 'a', 'b')
+        eq(testArray.length, 5)
+        eq(testArray[0], 1)
+        eq(testArray[1], 'a')
+        eq(testArray[2], 'b')
+        eq(testArray[3], 2)
+    },
+
+    'If deleteCount is non zero and items given, it should first delete and then insert.':function(){
+        testArray = [1,2,3]
+        var splicedArray = splice(testArray, 1, 1, 'a', 'b')
+        eq(testArray.length, 4)
+        eq(testArray[0], 1)
+        eq(testArray[1], 'a')
+        eq(testArray[2], 'b')
+        eq(testArray[3], 3)
+    },
+
+    'If deleteCount > array.length - start, it should delete element from start to the end.':function(){
+        testArray = ['a',2,3,4,'b']
+        var splicedArray = splice(testArray, 1, 5)
+        eq(testArray.length, 1)
+    },
+
+    'It should handle holes same as other elements ':function(){
+        var testArray = [1,2,,,3]
+        var splicedArray = splice(testArray, 1, 2)
+        eq(testArray.length, 3)
+        eq(1 in testArray, false)
+        eq(1 in splicedArray, false) 
+    }
+
+});
+</script>
