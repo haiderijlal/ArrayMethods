@@ -57,7 +57,8 @@ var TinyTest = {
         var failures = 0;                   // failures are count to track no of test failed.
         for (var testName in tests) {        // for loop to iterate through tests object
             var testAction = tests[testName];  // testAction is actually each method of tests object.
-            try {                              // try block, if passed console 'OK' message.
+            try {                             //// try block, if passed console 'OK' message.
+                                             
                 testAction.apply(this);
                 var Message = 'Test: ' + testName;
                 console.log("%c" + Message, "color: green");        
